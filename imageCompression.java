@@ -27,7 +27,7 @@ public class imageCompression {
     File outputFile = new File("output.jpg");
     ImageIO.write(image2, "jpg", outputFile);
     PrintStream outputCompressed = new PrintStream(new File("compressed.txt"));
-    compress(inputFile, outputCompressed);
+    compress(inputFile, outputCompressed, inputFile);
   }
 
   private static int[][] convertTo2DUsingGetRGB(BufferedImage image, PrintStream output) {
@@ -49,18 +49,22 @@ public class imageCompression {
     return result;
   }
 
-  public static void compress(File inputFile, PrintStream outputCompressed)
+  public static void compress(File inputFile, PrintStream outputCompressed, File inputFile2)
       throws FileNotFoundException {
     Scanner outerSc = new Scanner(inputFile);
+    Scanner firstScanner = new Scanner(inputFile2);
     while (outerSc.hasNextLine()) {
       Scanner innerSc = new Scanner(outerSc.nextLine());
-      outputCompressed.print(innerSc.nextInt() + " ");
+      int first = firstScanner.nextInt();
+      firstScanner.nextLine();
+      outputCompressed.print(first + " ");
       while (innerSc.hasNextInt()) {
         int val = 0;
         if (innerSc.hasNextInt()) {
           val = innerSc.nextInt();
-        } else {
-          break;
+        }
+        if (innerSc.hasNextInt()) {
+          val += innerSc.nextInt();
         }
         outputCompressed.print(val + " ");
       }
